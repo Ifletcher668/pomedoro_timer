@@ -89,6 +89,21 @@ const App = (props:any, prevState:any) => {
             setIntervalId(newIntervalId); 
         }
     };
+
+    const handleResetButton = () => {
+        // clear the timeout interval
+        clearInterval(intervalId as undefined); 
+        // set the intervalId to null
+        setIntervalId(null);  
+        // set the currentSessionType to "Session"
+        setCurrentSessionType("Session");
+        // set the SessionLength to 25 minutes
+        setSessionLength(1500); 
+        // set the BreakLength to 25 minutes
+        setBreakLength(300); 
+        // set the TimeLeft to 25 minutes 
+        setTimeLeft(1500)
+    }
     return (
         <div className="App-header">
             <Break
@@ -117,6 +132,7 @@ const App = (props:any, prevState:any) => {
                     incrementSessionLengthByOneMinute
                 }
             />
+            <button id="reset" onClick={handleResetButton}>Reset</button>
         </div>
     );
 }
