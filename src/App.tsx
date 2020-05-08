@@ -11,8 +11,8 @@ const App = (props:any, prevState:any) => {
     const [sessionLength, setSessionLength] = useState(1500);
     const [breakLength, setBreakLength] = useState(300);
     const [currentSessionType, setCurrentSessionType] = useState<string>("Session"); // will always be either Session or Break 
-    const [intervalId, setIntervalId] = useState< NodeJS.Timeout | undefined | null>(null); 
-    const [timeLeft, setTimeLeft] = useState<number | undefined>(sessionLength);
+    const [intervalId, setIntervalId] = useState< NodeJS.Timeout | null>(null); 
+    const [timeLeft, setTimeLeft] = useState<number>(sessionLength);
 
     // functions to handle sessions
     const decrementSessionLengthByOneMinute = () => {
@@ -45,9 +45,24 @@ const App = (props:any, prevState:any) => {
     };
 
 
+    // useEffect is a builtin react hook that listens to any changes made to a variable 
     useEffect(() => {
         setTimeLeft(sessionLength);
     }, [sessionLength]);
+
+    //listen to timeLeft changes
+    useEffect(() => {
+        if (timeLeft === 0) {
+            if (currentSessionType === "Session") {
+                setCurrentSessionType("Break"); 
+                setTimeLeft(breakLength)
+            }
+            else if (currentSessionType === "Break") {
+                setCurrentSessionType("Session");
+                setTimeLeft(sessionLength); 
+            }
+        }
+        }, [breakLength, currentSessionType, sessionLength, timeLeft]); // known as a dependency array. Anything used in the callback of useEffect must be inside the dependency array 
 
     const isStarted:boolean = intervalId !== null; 
     const handleStartStopClick = () => {
@@ -55,36 +70,15 @@ const App = (props:any, prevState:any) => {
             // if we are in started mode:
             // we want to stop the timer
             // clearInterval method
-            
-            // typecasting intervalId to undefined, because clearInterval accepts either type number or type undefined
-            clearInterval(intervalId as undefined)
+            if (intervalId) {
+                clearInterval(intervalId)
+            }
             // setting intervalId back to null, so the function can properly run. 
             setIntervalId(null);
-            
         }
-        else {  // if we are in stopped mode:
-            // decrement timeleft by one every second (100ms)
-            // to do this, we'll use setInterval function
+        else {  // in stopeed mode: 
             const newIntervalId = setInterval(() => {
-                setTimeLeft((prevTimeLeft) => {
-                    const newTimeLeft:number = (prevTimeLeft as number) - 1;
-                    if (newTimeLeft >= 0) {
-                        return newTimeLeft; 
-                    }
-
-                    if (currentSessionType === "Session") {
-
-                        setCurrentSessionType("Break"); 
-
-                        return breakLength; 
-                    }
-                    else if (currentSessionType === "Break") {
-
-                        setCurrentSessionType("Session");
-
-                        return sessionLength; 
-                    }
-                }) 
+                setTimeLeft((prevTimeLeft) => prevTimeLeft -1 ) 
             }, 10); // TODO sadf asdf 
             setIntervalId(newIntervalId); 
         }
@@ -92,7 +86,9 @@ const App = (props:any, prevState:any) => {
 
     const handleResetButton = () => {
         // clear the timeout interval
-        clearInterval(intervalId as undefined); 
+        if (intervalId) {
+            clearInterval(intervalId)
+        } 
         // set the intervalId to null
         setIntervalId(null);  
         // set the currentSessionType to "Session"
@@ -116,10 +112,9 @@ const App = (props:any, prevState:any) => {
                 }
             />
             <Timer 
-                sessionLength={sessionLength} 
-                breakLength={breakLength}
                 timerLabel={currentSessionType}
                 handleStartStopClick={handleStartStopClick}
+                handleResetButton={handleResetButton}
                 startStopButtonLabel={isStarted? "Stop": "Start"}
                 timeLeft={timeLeft}
             />
@@ -132,7 +127,7 @@ const App = (props:any, prevState:any) => {
                     incrementSessionLengthByOneMinute
                 }
             />
-            <button id="reset" onClick={handleResetButton}>Reset</button>
+            
         </div>
     );
 }

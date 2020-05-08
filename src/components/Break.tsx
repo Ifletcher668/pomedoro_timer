@@ -1,14 +1,19 @@
 import moment from 'moment'
 import React from 'react'
 
-const Break = (props:any) => { 
-    const {
-        breakLength,
-        incrementBreakLengthByOneMinute,
-        decrementBreakLengthByOneMinute,
-    } = props
+type Props = {
+    breakLength: number
+    incrementBreakLengthByOneMinute: () => void
+    decrementBreakLengthByOneMinute: () => void
+}
 
+const Break:React.FC<Props> =({
+    breakLength,
+    incrementBreakLengthByOneMinute,
+    decrementBreakLengthByOneMinute,
 
+}) => { 
+    
     const breakLengthInMinutes:number = moment
         .duration(breakLength, 's')
         .asMinutes();

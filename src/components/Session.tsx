@@ -1,18 +1,24 @@
 import moment from 'moment'
 import React from 'react'
 
-const Session = (props:any) => { 
 
-    const {
-        sessionLength,
-        decrementSessionLengthByOneMinute,
-        incrementSessionLengthByOneMinute,
-    } = props; 
+
+type Props = {
+    sessionLength: number;
+    decrementSessionLengthByOneMinute: () => void;
+    incrementSessionLengthByOneMinute: () => void;
+}
+
+const Session: React.FC<Props> = ({
+    sessionLength,
+    decrementSessionLengthByOneMinute,
+    incrementSessionLengthByOneMinute,
+}) => { 
 
     const sessionLengthInMinutes: number = moment
         .duration(sessionLength, "s")
         .asMinutes();
-        
+
     return (
         <div>
             <p id="session-label">Session</p>
