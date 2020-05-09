@@ -101,7 +101,8 @@ const App = (props:any, prevState:any) => {
         setTimeLeft(1500)
     }
     return (
-        <div className="App-header">
+        <div className="App-main">
+            <div>
             <Break
                 breakLength={breakLength}
                 decrementBreakLengthByOneMinute={
@@ -111,6 +112,17 @@ const App = (props:any, prevState:any) => {
                     incrementBreakLengthByOneMinute
                 }
             />
+                <Session
+                    sessionLength={sessionLength}
+                    decrementSessionLengthByOneMinute={
+                        decrementSessionLengthByOneMinute
+                    }
+                    incrementSessionLengthByOneMinute={
+                        incrementSessionLengthByOneMinute
+                    }
+                />
+            </div>
+            <div>
             <Timer 
                 timerLabel={currentSessionType}
                 handleStartStopClick={handleStartStopClick}
@@ -118,15 +130,7 @@ const App = (props:any, prevState:any) => {
                 startStopButtonLabel={isStarted? "Stop": "Start"}
                 timeLeft={timeLeft}
             />
-            <Session
-                sessionLength={sessionLength}
-                decrementSessionLengthByOneMinute={
-                    decrementSessionLengthByOneMinute
-                }
-                incrementSessionLengthByOneMinute={
-                    incrementSessionLengthByOneMinute
-                }
-            />
+            </div>
             
         </div>
     );

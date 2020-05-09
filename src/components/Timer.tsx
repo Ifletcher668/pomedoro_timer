@@ -23,11 +23,11 @@ const Timer:React.FC<Props> = ({
     const formattedTimeLeft = moment.duration(timeLeft, "s").format("mm:ss", {trim: false});
     
     return (
-        <div>
-            <p id="timer-label">{timerLabel}</p>
+        <div className="timer-components">
+            <h3 id="timer-label">{timerLabel}</h3>
             <p id="time-left">{formattedTimeLeft}</p>
-            <button onClick={handleStartStopClick}>{startStopButtonLabel}</button>
-            <button id="reset" onClick={handleResetButton}>Reset</button>
+            <button className="btn btn-primary" onClick={handleStartStopClick}>{startStopButtonLabel}</button>
+            <button className="btn btn-secondary" id="reset" onClick={handleResetButton}>Reset</button>
         </div>
     );
 };

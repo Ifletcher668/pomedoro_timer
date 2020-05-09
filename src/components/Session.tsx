@@ -20,11 +20,11 @@ const Session: React.FC<Props> = ({
         .asMinutes();
 
     return (
-        <div>
-            <p id="session-label">Session</p>
+        <div className="timer-components">
+            <h3 id="session-label">Focus</h3>
             <p id="session-length">{sessionLengthInMinutes}</p>
-            <button id="session-increment" onClick={incrementSessionLengthByOneMinute}> + </button>
-            <button id="session-decrement" onClick={decrementSessionLengthByOneMinute}> - </button>
+            <button id="session-increment" className="btn btn-primary" onClick={incrementSessionLengthByOneMinute}> + </button>
+            <button id="session-decrement" className="btn btn-secondary" onClick={decrementSessionLengthByOneMinute}> - </button>
         </div>
     ); 
 }
